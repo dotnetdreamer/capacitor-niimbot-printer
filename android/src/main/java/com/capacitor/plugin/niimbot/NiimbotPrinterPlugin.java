@@ -161,8 +161,17 @@ public class NiimbotPrinterPlugin extends Plugin {
         }
     }
 
+    public void cleanUp() {
+        _removeFloatingActionButton();
 
-    public void removeFloatingActionButton() {
+        final String script =
+                "window.localStorage.removeItem('automation')" +
+                        "";
+        getBridge().getWebView().evaluateJavascript(script, null);
+
+    }
+
+    private void _removeFloatingActionButton() {
         if (_fab != null) {
             ViewGroup parent = (ViewGroup) _fab.getParent();
             if (parent != null) {

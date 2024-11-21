@@ -26,7 +26,7 @@ public class WebAppInterface {
             plugin.getBridge().getWebView().evaluateJavascript(script, null);
 
             if (plugin instanceof NiimbotPrinterPlugin) {
-                ((NiimbotPrinterPlugin) plugin).removeFloatingActionButton();
+                ((NiimbotPrinterPlugin) plugin).cleanUp();
             }
 
             if (!toastMessage.isEmpty()) {
@@ -34,7 +34,10 @@ public class WebAppInterface {
             }
 
             // Redirect to the specified URI
-            plugin.getBridge().getWebView().loadUrl(redirectFullUri);
+            //Sometimes the fab button isn't removed and navigation happens. We add a little delay here
+            new Handler().postDelayed(() -> {
+                plugin.getBridge().getWebView().loadUrl(redirectFullUri);
+            }, 1000);
         });
     }
 
