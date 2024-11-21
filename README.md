@@ -1,6 +1,6 @@
 <div align="center">
   <h1>Niimbot printer plugin</h1>
-  <p><strong>A capacitor plugin that connects to Niimbot printers via [NiimBlue](https://github.com/MultiMote/niimblue)</strong></p>
+  <p><strong>A capacitor plugin that connects to Niimbot printers via NiimBlue https://github.com/MultiMote/niimblue web ui</strong></p>
 </div>
 
 ## Install
