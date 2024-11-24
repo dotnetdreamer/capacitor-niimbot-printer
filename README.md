@@ -1,6 +1,13 @@
-# capacitor-niimbot-printer
+<div align="center">
+  <h1>Niimbot printer plugin</h1>
+  <p><strong>A capacitor plugin that connects to Niimbot printers via NiimBlue https://github.com/MultiMote/niimblue web ui</strong></p>
+</div>
 
-Niimbot printer plugin
+## How it works ?
+This plugin essentially uses [niimblue](https://github.com/MultiMote/niimblue) to connect to NIIMBOT printers. The plugin provides an easy way to load and automate niimblue in webview via simple API.
+
+## Having Issues ?
+If you are facing issue related to niimblue, please go to the official repository and file it there. Issues related to the plugin itself can be created in this repsoitory
 
 ## Install
 
