@@ -23,15 +23,6 @@ public class NiimbotPrinterPlugin extends Plugin {
     private FloatingActionButton _fab;
 
     @PluginMethod
-    public void echo(PluginCall call) {
-        String value = call.getString("value");
-
-        /*JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));*/
-        call.resolve();
-    }
-
-    @PluginMethod
     public void print(PluginCall call) {
         final String niimblueUri = call.getString("niimblueUri");
         if (niimblueUri == null || niimblueUri.isEmpty()) {
@@ -45,6 +36,7 @@ public class NiimbotPrinterPlugin extends Plugin {
         final String finalToastMessage = toastEnabled ? toastMessage : "";
         final String redirectUri = call.getString("redirectUri");
         final Boolean preview = call.getBoolean("preview", false);
+        final boolean displayFab = call.getBoolean("displayFab", true);
 
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
@@ -65,6 +57,7 @@ public class NiimbotPrinterPlugin extends Plugin {
                     if(isPageLoaded) {
                         // Remove the WebViewClient to prevent multiple calls after redirect to main app
                         webView.setWebViewClient(null);
+                        _notifyDone();
                         return;
                     }
 
@@ -181,7 +174,7 @@ public class NiimbotPrinterPlugin extends Plugin {
         }
     }
 
-//    public void notifyDone() {
-//        notifyListeners("done", null);
-//    }
+    private void _notifyDone() {
+        notifyListeners("done", null);
+    }
 }

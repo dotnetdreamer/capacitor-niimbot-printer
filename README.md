@@ -13,7 +13,6 @@ npx cap sync
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
 * [`print(...)`](#print)
 * [Interfaces](#interfaces)
 
@@ -22,30 +21,17 @@ npx cap sync
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
-
-```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
-```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
-
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
-
---------------------
-
-
 ### print(...)
 
 ```typescript
 print(options: INiimbotPrintOptions) => Promise<any>
 ```
 
-| Param         | Type                                                                  |
-| ------------- | --------------------------------------------------------------------- |
-| **`options`** | <code><a href="#iniimbotprintoptions">INiimbotPrintOptions</a></code> |
+Print a document using the Niimbot printer. Internally, this will open the Niimblue web app to print the document
+
+| Param         | Type                                                                  | Description                                   |
+| ------------- | --------------------------------------------------------------------- | --------------------------------------------- |
+| **`options`** | <code><a href="#iniimbotprintoptions">INiimbotPrintOptions</a></code> | The options to use when printing the document |
 
 **Returns:** <code>Promise&lt;any&gt;</code>
 
@@ -57,11 +43,12 @@ print(options: INiimbotPrintOptions) => Promise<any>
 
 #### INiimbotPrintOptions
 
-| Prop              | Type                                                  |
-| ----------------- | ----------------------------------------------------- |
-| **`niimblueUri`** | <code>string</code>                                   |
-| **`redirectUri`** | <code>string</code>                                   |
-| **`preview`**     | <code>boolean</code>                                  |
-| **`toast`**       | <code>{ enabled?: boolean; message?: string; }</code> |
+| Prop              | Type                                                  | Description                                                                                                                                                                                                                                                                                              |
+| ----------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`niimblueUri`** | <code>string</code>                                   | The compiled Niimblue web app URI. This is the URL to the Niimblue web app. You can get this URL by compiling the Niimblue web app. in order to compile the Niimblue web app, you need to have the Niimblue web app source code. You can get the source code from https://github.com/MultiMote/niimblue. |
+| **`redirectUri`** | <code>string</code>                                   | After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL. This is the app redirect URL Default: 'index.html'                                                                                                                                                  |
+| **`preview`**     | <code>boolean</code>                                  | Should show the the print preview dialog on load or not. Setting it to true will show the print preview dialog immediately Default: false                                                                                                                                                                |
+| **`displayFab`**  | <code>boolean</code>                                  | Whether to show the close floating button or not. Setting it to false will hide the close button Default: true                                                                                                                                                                                           |
+| **`toast`**       | <code>{ enabled?: boolean; message?: string; }</code> | An optional message to show as a toast when navigating back from the niimblue to the app                                                                                                                                                                                                                 |
 
 </docgen-api>
