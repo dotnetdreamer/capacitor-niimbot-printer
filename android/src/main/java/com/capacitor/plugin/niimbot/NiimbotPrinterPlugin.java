@@ -2,6 +2,8 @@ package com.capacitor.plugin.niimbot;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -16,6 +18,10 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.graphics.Color;
 import android.content.res.ColorStateList;
+import android.content.Context;
+import android.content.res.AssetManager;
+import java.io.IOException;
+import java.io.InputStream;
 
 @CapacitorPlugin(name = "NiimbotPrinter")
 public class NiimbotPrinterPlugin extends Plugin {
@@ -54,6 +60,8 @@ public class NiimbotPrinterPlugin extends Plugin {
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
+
                     if(isPageLoaded) {
                         // Remove the WebViewClient to prevent multiple calls after redirect to main app
                         webView.setWebViewClient(null);
@@ -61,9 +69,19 @@ public class NiimbotPrinterPlugin extends Plugin {
                         return;
                     }
 
-                    isPageLoaded = true;
-                    super.onPageFinished(view, url);
+                    AssetManager assetManager = getContext().getAssets();
+                    try {
+                        String[] files = assetManager.list("");
+                        if (files != null) {
+                            for (String file : files) {
+                                System.out.println("Asset: " + file);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
+                    isPageLoaded = true;
                     final String previewScript = "window.Capacitor.Plugins.SplashScreen?.hide();" +
                             "var toolbarButtons = document.querySelectorAll('.toolbar > button');" +
                             "console.log('toolbarButtons', toolbarButtons);" +
@@ -98,6 +116,19 @@ public class NiimbotPrinterPlugin extends Plugin {
 
                     // Add the FloatingActionButton
                     addFloatingActionButton(webView, finalToastMessage, redirectFullUri);
+                }
+
+                @Override
+                public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+//                    if (request.getUrl().toString().contains("your-css-file.css")) {
+//                        try {
+//                            InputStream inputStream = getContext().getAssets().open("your-css-file.css");
+//                            return new WebResourceResponse("text/css", "UTF-8", inputStream);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+                    return super.shouldInterceptRequest(view, request);
                 }
             });
 
