@@ -54,7 +54,9 @@ public class NiimbotPrinterPlugin extends Plugin {
 
                 @Override
                 public void onPageFinished(WebView view, String url) {
-                    if(isPageLoaded) {
+                  super.onPageFinished(view, url);
+
+                  if(isPageLoaded) {
                         // Remove the WebViewClient to prevent multiple calls after redirect to main app
                         webView.setWebViewClient(null);
                         _notifyDone();
@@ -62,8 +64,6 @@ public class NiimbotPrinterPlugin extends Plugin {
                     }
 
                     isPageLoaded = true;
-                    super.onPageFinished(view, url);
-
                     final String previewScript = "window.Capacitor.Plugins.SplashScreen?.hide();" +
                             "var toolbarButtons = document.querySelectorAll('.toolbar > button');" +
                             "console.log('toolbarButtons', toolbarButtons);" +
