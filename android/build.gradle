@@ -58,3 +58,22 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
 }
+
+
+// task copyPluginAssets(type: Copy) {
+//     from 'src/niimblue'
+//     //this won't work locally but will work on release plugin
+//     //copy from node_modules/apacitor-niimbot-printer/src/niimblue to android/app/src/main/assets/public/assets
+//     into '../../../android/app/src/main/assets/public/assets'
+// }
+// //comment this when working locally (otherwise will get build error) and manually copy the assets
+// preBuild.dependsOn copyPluginAssets
+
+//localPluginPath will be set in gradle.properties when working locally. This is due to local plugin is added as npm link in nodule_modules
+ task copyPluginAssets(type: Copy) {
+   def localPluginPath = project.hasProperty('localPluginPath') ? project.property('localPluginPath') : '../../../';
+     from 'src/niimblue'
+     into localPluginPath + 'android/app/src/main/assets/public/assets'
+ }
+
+preBuild.dependsOn copyPluginAssets

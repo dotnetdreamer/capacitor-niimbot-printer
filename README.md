@@ -11,6 +11,14 @@ If you are facing issue related to niimblue, please go to the official repositor
 
 ## Install
 
+### Local version (Local Machine)
+To use and install this plugin locally (instead of npm), follow:
+1. `git clone https://github.com/dotnetdreamer/capacitor-niimbot-printer.git`
+2. `npm i path_to_just_cloned_repo (e.g C:\Git\z_others\capacitor-niimbot-printer)`
+3. Go to `this_plugin_path` -> android -> gradle.properties and uncomment `localPluginPath` property. Now change the value to your app root location (where you will use this plugin). The path must ends with '/' character
+4. This plugin has pre-compiled version of Niimlue web app inside `android/src/niimblue` folder. You can replace it with your own version of Niimblue web app by following compilation instructions [here](https://github.com/MultiMote/niimbluelib)
+
+### Release version (NPM)
 ```bash
 npm install capacitor-niimbot-printer
 npx cap sync
