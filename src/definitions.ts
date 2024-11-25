@@ -15,7 +15,7 @@ export interface INiimbotPrintOptions {
      */
     niimblueUri: string;
     /**
-     * After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL. This is the app redirect URL
+     * After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL
      * Default: 'index.html'
      */
     redirectUri?: string;
@@ -30,7 +30,7 @@ export interface INiimbotPrintOptions {
      */
     displayFab?: boolean;
     /**
-     * An optional message to show as a toast when navigating back from the niimblue to the app
+     * An optional message to show as a toast when navigating back from the NiimBlue web ui to the app
      */
     toast?: {
         /**
