@@ -14,14 +14,16 @@ To use and install this plugin locally (instead of npm), follow:
 1. `git clone https://github.com/dotnetdreamer/capacitor-niimbot-printer.git`
 2. `npm i path_to_just_cloned_repo (e.g C:\Git\z_others\capacitor-niimbot-printer)`
 3. Go to `this_plugin_path -> android -> gradle.properties` and uncomment `localPluginPath` property. Now change the value to your app root location (where you will use this plugin). The path must ends with '/' character
-4. (important) If you are running app via `ionic capacitor run android --livereload --external --host=192.168.50.15` i.e via `--livereload` then you need to copy `your_app -> android -> app -> src -> main -> assets -> public -> assets -> all_files_related_to_niimblue_web_ui`. This is important because the plugin copies the Niimblue web ui files only at build time into capacitor public assets folder. But during livereload your app is running and serving assets directly from your `your_app -> src -> assets` folder.
-5. (Optional) This plugin has pre-compiled version of Niimlue web app inside `android/src/niimblue` folder. You can replace it with your own version of Niimblue web app by following compilation instructions [here](https://github.com/MultiMote/niimblue)
+4. (Optional) This plugin has pre-compiled version of Niimlue web app inside `android/src/niimblue` folder. You can replace it with your own version of Niimblue web app by following compilation instructions [here](https://github.com/MultiMote/niimblue)
 
 ### Release version (NPM)
 ```bash
 npm install capacitor-niimbot-printer
 npx cap sync
 ```
+
+> [!Important]
+>  Make sure that `your_app -> android -> app -> src -> main -> assets -> public -> assets` has all the required files copied by the plugin during build time. You can look specifically for index.html and other js, fonts files. 
 
 ## API
 
