@@ -23,7 +23,10 @@ npx cap sync
 ```
 
 > [!Important]
->  Make sure that `your_app -> android -> app -> src -> main -> assets -> public -> assets` has all the required files copied by the plugin during build time. You can look specifically for index.html and other js, fonts files. 
+>  Make sure that `your_app -> android -> app -> src -> main -> assets -> public -> assets` has all the required files copied by the plugin during build time. You can look specifically for index.html and other js, fonts files.
+
+## How navigation between your app & Niimblue web app works ?
+When you use this plugin, your app can call print API method then your user will be redirected to Niimblue web ui which means your main ui is no longer active. Inside Niimblue web ui, user has two choices i.e Press floating close (fab) button or use back button or gestures. Only then Niimblue web ui will be destroyed and your will get active. 
 
 ## API
 
@@ -61,6 +64,7 @@ Print a document using the Niimbot printer. Internally, this will open the Niimb
 
 | Prop              | Type                                                  | Description                                                                                                                               |
 | ----------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **`debug`**       | <code>boolean</code>                                  | Whether to show console logs or not Default: true                                                                                         |
 | **`redirectUri`** | <code>string</code>                                   | After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL Default: 'index.html'                 |
 | **`preview`**     | <code>boolean</code>                                  | Should show the the print preview dialog on load or not. Setting it to true will show the print preview dialog immediately Default: false |
 | **`displayFab`**  | <code>boolean</code>                                  | Whether to show the close floating button or not. Setting it to false will hide the close button Default: true                            |

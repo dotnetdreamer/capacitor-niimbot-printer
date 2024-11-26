@@ -10,6 +10,11 @@ export interface NiimbotPrinterPlugin extends Plugin {
 
 export interface INiimbotPrintOptions {
     /**
+     * Whether to show console logs or not
+     * Default: true
+     */
+    debug?: boolean;
+    /**
      * After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL
      * Default: 'index.html'
      */
