@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.graphics.Color;
 import android.content.res.ColorStateList;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 @CapacitorPlugin(name = "NiimbotPrinter")
 public class NiimbotPrinterPlugin extends Plugin {
 
@@ -24,12 +27,7 @@ public class NiimbotPrinterPlugin extends Plugin {
 
     @PluginMethod
     public void print(PluginCall call) {
-        final String niimblueUri = call.getString("niimblueUri");
-        if (niimblueUri == null || niimblueUri.isEmpty()) {
-            call.reject("niimblueUri is null or empty");
-            return;
-        }
-
+        final String niimblueUri = "assets/index.html";
         final JSObject toast = call.getObject("toast", new JSObject());
         final String toastMessage = toast.getString("message", "Redirecting...");
         final Boolean toastEnabled = toast.getBoolean("enabled", true);
@@ -44,7 +42,14 @@ public class NiimbotPrinterPlugin extends Plugin {
 
             final String currentUrl = webView.getUrl();
 
-            final String baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/")) + "/";
+            String baseUrl;
+            try {
+              URL url = new URL(currentUrl);
+              baseUrl = url.getProtocol() + "://" + url.getHost() + (url.getPort() != -1 ? ":" + url.getPort() : "") + "/";
+            } catch (MalformedURLException e) {
+              call.reject("Invalid URL: " + currentUrl);
+              return;
+            }
             final String redirectFullUri = (redirectUri == null || redirectUri.isEmpty()) ? currentUrl : baseUrl + redirectUri;
             String niimblueFullUri = baseUrl + niimblueUri;
 
