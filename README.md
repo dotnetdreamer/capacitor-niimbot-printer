@@ -14,7 +14,8 @@ To use and install this plugin locally (instead of npm), follow:
 1. `git clone https://github.com/dotnetdreamer/capacitor-niimbot-printer.git`
 2. `npm i path_to_just_cloned_repo (e.g C:\Git\z_others\capacitor-niimbot-printer)`
 3. Go to `this_plugin_path -> android -> gradle.properties` and uncomment `localPluginPath` property. Now change the value to your app root location (where you will use this plugin). The path must ends with '/' character
-4. (Optional) This plugin has pre-compiled version of Niimlue web app inside `android/src/niimblue` folder. You can replace it with your own version of Niimblue web app by following compilation instructions [here](https://github.com/MultiMote/niimbluelib)
+4. (important) If you are running app via `ionic capacitor run android --livereload --external --host=192.168.50.15` i.e via `--livereload` then you need to copy `your_app -> android -> app -> src -> main -> assets -> public -> assets -> all_files_related_to_niimblue_web_ui`. This is important because the plugin copies the Niimblue web ui files only at build time into capacitor public assets folder. But during livereload your app is running and serving assets directly from your `your_app -> src -> assets` folder.
+5. (Optional) This plugin has pre-compiled version of Niimlue web app inside `android/src/niimblue` folder. You can replace it with your own version of Niimblue web app by following compilation instructions [here](https://github.com/MultiMote/niimblue)
 
 ### Release version (NPM)
 ```bash
@@ -56,12 +57,11 @@ Print a document using the Niimbot printer. Internally, this will open the Niimb
 
 #### INiimbotPrintOptions
 
-| Prop              | Type                                                  | Description                                                                                                                                                                                                                                                                                              |
-| ----------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`niimblueUri`** | <code>string</code>                                   | The compiled Niimblue web app URI. This is the URL to the Niimblue web app. You can get this URL by compiling the Niimblue web app. in order to compile the Niimblue web app, you need to have the Niimblue web app source code. You can get the source code from https://github.com/MultiMote/niimblue. |
-| **`redirectUri`** | <code>string</code>                                   | After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL Default: 'index.html'                                                                                                                                                                                |
-| **`preview`**     | <code>boolean</code>                                  | Should show the the print preview dialog on load or not. Setting it to true will show the print preview dialog immediately Default: false                                                                                                                                                                |
-| **`displayFab`**  | <code>boolean</code>                                  | Whether to show the close floating button or not. Setting it to false will hide the close button Default: true                                                                                                                                                                                           |
-| **`toast`**       | <code>{ enabled?: boolean; message?: string; }</code> | An optional message to show as a toast when navigating back from the NiimBlue web ui to the app                                                                                                                                                                                                          |
+| Prop              | Type                                                  | Description                                                                                                                               |
+| ----------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **`redirectUri`** | <code>string</code>                                   | After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL Default: 'index.html'                 |
+| **`preview`**     | <code>boolean</code>                                  | Should show the the print preview dialog on load or not. Setting it to true will show the print preview dialog immediately Default: false |
+| **`displayFab`**  | <code>boolean</code>                                  | Whether to show the close floating button or not. Setting it to false will hide the close button Default: true                            |
+| **`toast`**       | <code>{ enabled?: boolean; message?: string; }</code> | An optional message to show as a toast when navigating back from the NiimBlue web ui to the app                                           |
 
 </docgen-api>

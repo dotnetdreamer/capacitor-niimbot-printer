@@ -10,11 +10,6 @@ export interface NiimbotPrinterPlugin extends Plugin {
 
 export interface INiimbotPrintOptions {
     /**
-     * The compiled Niimblue web app URI. This is the URL to the Niimblue web app. You can get this URL by compiling the Niimblue web app.
-     * in order to compile the Niimblue web app, you need to have the Niimblue web app source code. You can get the source code from https://github.com/MultiMote/niimblue.
-     */
-    niimblueUri: string;
-    /**
      * After closing the Niimblue web app, the user will be redirected to this URL. This is your app's URL
      * Default: 'index.html'
      */
