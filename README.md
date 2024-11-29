@@ -74,4 +74,8 @@ Print a document using the Niimbot printer. Internally, this will open the Niimb
 | **`displayFab`**  | <code>boolean</code>                                  | Whether to show the close floating button or not. Setting it to false will hide the close button Default: true                            |
 | **`toast`**       | <code>{ enabled?: boolean; message?: string; }</code> | An optional message to show as a toast when navigating back from the NiimBlue web ui to the app                                           |
 
+| Method          | Signature                                                                  |
+| --------------- | -------------------------------------------------------------------------- |
+| **addListener** | (eventName: 'done', listenerFunc: () =&gt; void) =&gt; Promise&lt;void&gt; |
+
 </docgen-api>
