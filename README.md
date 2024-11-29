@@ -9,6 +9,9 @@ If you are facing issue related to NiimBlue, please go to the official repositor
 
 ## Install
 
+### Install Bluetooth ble plugin
+Install `https://github.com/capacitor-community/bluetooth-le`
+
 ### Local version (Local Machine)
 To use and install this plugin locally (instead of npm), follow:
 1. `git clone https://github.com/dotnetdreamer/capacitor-niimbot-printer.git`
@@ -23,7 +26,8 @@ npx cap sync
 ```
 
 > [!Important]
->  Make sure that `your_app -> android -> app -> src -> main -> assets -> public -> assets` has all the required files copied by the plugin during build time. You can look specifically for index.html and other js, fonts files.
+>  Make sure that `your_app/android/app/src/main/assets/public/assets/niimblue` has all the required files copied by the plugin during build time. You can look specifically for index.html and other js, fonts files.
+If you are running your app via livereload i.e `ionic capacitor run android --livereload --external` then make sure to copy `your_app/android/app/src/main/assets/public/assets/niimblue` folder into `your_app/src/assets` folder
 
 ## How navigation between your app & Niimblue web app works ?
 When you use this plugin, your app can call print API method then your user will be redirected to Niimblue web ui which means your main ui is no longer active. Inside Niimblue web ui, user has two choices i.e Press floating close (fab) button or use back button or gestures. Only then Niimblue web ui will be destroyed and your will get active. 

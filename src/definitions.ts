@@ -44,4 +44,13 @@ export interface INiimbotPrintOptions {
          */
         message?: string;
     }
+
+}
+interface INiimbotPrintOptionsWithListener extends INiimbotPrintOptions {
+    /**
+     * 
+     * @param eventName done
+     * @param listenerFunc callback
+     */
+    addListener(eventName: 'done', listenerFunc: () => void): Promise<void>;
 }

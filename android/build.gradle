@@ -73,7 +73,7 @@ dependencies {
  task copyPluginAssets(type: Copy) {
    def localPluginPath = project.hasProperty('localPluginPath') ? project.property('localPluginPath') : '../../../';
      from 'src/niimblue'
-     into localPluginPath + 'android/app/src/main/assets/public/assets'
+     into localPluginPath + 'android/app/src/main/assets/public/assets/niimblue'
  }
 
 preBuild.dependsOn copyPluginAssets

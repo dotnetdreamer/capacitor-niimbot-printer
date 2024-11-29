@@ -3,7 +3,6 @@ package com.capacitor.plugin.niimbot;
 import android.os.Handler;
 import android.os.Looper;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -28,7 +27,7 @@ public class NiimbotPrinterPlugin extends Plugin {
     @PluginMethod
     public void print(PluginCall call) {
         final Boolean debug = call.getBoolean("debug", true);
-        final String niimblueUri = "assets/index.html";
+        final String niimblueUri = "assets/niimblue/index.html";
         final JSObject toast = call.getObject("toast", new JSObject());
         final String toastMessage = toast.getString("message", "Redirecting...");
         final Boolean toastEnabled = toast.getBoolean("enabled", true);
@@ -54,72 +53,65 @@ public class NiimbotPrinterPlugin extends Plugin {
             final String redirectFullUri = (redirectUri == null || redirectUri.isEmpty()) ? currentUrl : baseUrl + redirectUri;
             String niimblueFullUri = baseUrl + niimblueUri;
 
-            // Set a WebViewClient to listen for the page load completion
-            webView.setWebViewClient(new WebViewClient() {
-                private boolean isPageLoaded = false;
+            final String loadingScript = "window.location.href = '" + niimblueFullUri + "';";
+            webView.evaluateJavascript(loadingScript, value -> {
+                //Check if main container is loaded in the page
+                final String checkPageLoadedScript = "var containerInterval = setInterval(function() {" +
+                        "    var container = document.querySelector('.container');" +
+                        (debug ? "console.log('Checking for container: .container', container);" : "") +
+                        "    if (container) {" +
+                        "        clearInterval(containerInterval);" +
+                        (debug ? "console.log('Container found:', container);" : "") +
+                        "    }" +
+                        "}, 100);"; // Check every 100 milliseconds
+                new Handler().postDelayed(() -> {
+//                    webView.evaluateJavascript(checkPageLoadedScript, null);
 
-                @Override
-                public void onPageFinished(WebView view, String url) {
-                  super.onPageFinished(view, url);
+                 final String backButtonScript =
+                 (debug ? "console.log('Adding scripts');" : "") +
+                   "  window.Capacitor.Plugins.App.addListener('backButton', (ev) => {" +
+                   (debug ? "console.log('backButton was called!');" : "") +
+                   "      window.WebAppInterface.onCloseButtonClick('" + finalToastMessage + "', '" + redirectFullUri + "');" +
+                   "  });";
 
-                  if(isPageLoaded) {
-                        // Remove the WebViewClient to prevent multiple calls after redirect to main app
-                        webView.setWebViewClient(null);
-                        //If we go back (with hardware back button or any other way) then we also make sure clean up is done properly
-                        //without fully relying on the print preview close button or fab button click
-                        cleanUp();
-                        _notifyDone();
-                        return;
-                    }
+                 final String previewScript = "window.Capacitor.Plugins.SplashScreen?.hide();" +
+                         "var toolbarButtons = document.querySelectorAll('.toolbar > button');" +
+                         (debug ? "console.log('toolbarButtons', toolbarButtons);" : "") +
+                         "var previewButton = null;" +
+                         "toolbarButtons.forEach(function(button) {" +
+                         "    var icon = button.querySelector('span.mdi');" +
+                         "    if (icon && icon.textContent === '') {" +
+                         "        previewButton = button;" +
+                         "    }" +
+                         "});" +
+                         (debug ? "console.log('previewButton', previewButton);" : "") +
+                         "if (previewButton) {" +
+                         "    previewButton.click();" +
+                         "}";
 
-                    isPageLoaded = true;
-                  final String backButtonScript =
-                    (debug ? "console.log('Adding scripts');" : "") +
-                      "  window.Capacitor.Plugins.App.addListener('backButton', (ev) => {" +
-                      (debug ? "console.log('backButton was called!');" : "") +
-                      "      window.WebAppInterface.onCloseButtonClick('" + finalToastMessage + "', '" + redirectFullUri + "');" +
-                      "  });";
+                 final String redirectScript =
+                         "var checkButtonInterval = setInterval(function() {" +
+                                 "    var button = document.querySelector('.modal .btn-secondary');" +
+                                 (debug ? "console.log('Checking for close button: .modal .btn-secondary', button);" : "") +
+                                 "    if (button) {" +
+                                 "        clearInterval(checkButtonInterval);" +
+                                 (debug ? "console.log('Close Button found:', button);" : "") +
+                                 "        button.addEventListener('click', function() {" +
+                                 (debug ? "console.log('Calling onCloseButtonClick');" : "") +
+                                 "            window.WebAppInterface.onCloseButtonClick('" + finalToastMessage + "', '" + redirectFullUri + "');" +
+                                 "        });" +
+                                 "    }" +
+                                 "}, 100);"; // Check every 100 milliseconds
+                     final String fullPreviewScript = preview ? previewScript + redirectScript : "";
+                     final String fullScript = backButtonScript + fullPreviewScript;
+                     // Inject JavaScript to set up the event listener after the page loads
+                     webView.evaluateJavascript(fullScript, null);
 
-                    final String previewScript = "window.Capacitor.Plugins.SplashScreen?.hide();" +
-                            "var toolbarButtons = document.querySelectorAll('.toolbar > button');" +
-                            (debug ? "console.log('toolbarButtons', toolbarButtons);" : "") +
-                            "var previewButton = null;" +
-                            "toolbarButtons.forEach(function(button) {" +
-                            "    var icon = button.querySelector('span.mdi');" +
-                            "    if (icon && icon.textContent === '') {" +
-                            "        previewButton = button;" +
-                            "    }" +
-                            "});" +
-                            (debug ? "console.log('previewButton', previewButton);" : "") +
-                            "if (previewButton) {" +
-                            "    previewButton.click();" +
-                            "}";
-
-                    final String redirectScript =
-                            "var checkButtonInterval = setInterval(function() {" +
-                                    "    var button = document.querySelector('.modal .btn-secondary');" +
-                                    (debug ? "console.log('Checking for close button: .modal .btn-secondary', button);" : "") +
-                                    "    if (button) {" +
-                                    "        clearInterval(checkButtonInterval);" +
-                                    (debug ? "console.log('Close Button found:', button);" : "") +
-                                    "        button.addEventListener('click', function() {" +
-                                    (debug ? "console.log('Calling onCloseButtonClick');" : "") +
-                                    "            window.WebAppInterface.onCloseButtonClick('" + finalToastMessage + "', '" + redirectFullUri + "');" +
-                                    "        });" +
-                                    "    }" +
-                                    "}, 100);"; // Check every 100 milliseconds
-                    final String fullPreviewScript = preview ? previewScript + redirectScript : "";
-                    final String fullScript = backButtonScript + fullPreviewScript;
-                    // Inject JavaScript to set up the event listener after the page loads
-                    webView.evaluateJavascript(fullScript, null);
-
-                    // Add the FloatingActionButton
+                     //Add the FloatingActionButton
                     addFloatingActionButton(webView, finalToastMessage, redirectFullUri);
-                }
+                }, 1000);
             });
 
-            // Load the new URL
-            webView.loadUrl(niimblueFullUri);
             // Add the JavaScript interface
             webView.addJavascriptInterface(new WebAppInterface(this), "WebAppInterface");
 
